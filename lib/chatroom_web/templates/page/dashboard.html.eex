@@ -1,0 +1,80 @@
+
+<head>
+<script src="/js/app.js"></script>
+
+<body style="background-color:powderblue;">
+	<link href='https://fonts.googleapis.com/css?family=ABeeZee' rel='stylesheet'>
+
+	<style>
+
+	h1 {
+		margin-top: -70px;
+		margin-left: 80px;
+		font-family: 'ABeeZee';font-size: 32px;
+	}
+
+	h3 {
+		
+		font-family: 'ABeeZee';font-size: 20px;
+	}
+
+	button {
+	background-color: #4CAFC0;
+    	border: none;
+    	color: black;
+    	padding: 1px 10px;
+    	text-align: center;
+	font-weight: bold;
+    	text-decoration: none;
+    	display: inline-block;
+    	font-size: 14px;
+	}
+	</style>
+</head>
+<body>
+
+	<img src="https://www.themarketersforum.co.uk/wp-content/uploads/2016/01/large-twitter-bird.jpg" 
+	 alt="Twitter Clone application" style="width:100px;height:100px;">
+	<header>
+		<div class="wrapper" style="background-color:powderblue;">
+			<h1><center>Welcome to Twitter Clone Application</center></h1><br><br><br>
+                <button id="btnLogOut" onclick="location.href = 'http://localhost:4000';" align="right">Log Out</button>
+		</div>
+	</header>
+	<div id="content">
+		<div class="wrapper">
+            <div class="panel right" style="background-color:powderblue;">
+				<h3>Subscribe</h3>
+						<input id="username2" placeholder = "Username" type="text">
+                        <button id="btnFollow" >Follow</button>
+			</div>
+			<div class="panel right" style="background-color:powderblue;">
+				<h3>Get my mentions</h3>
+						<div id="mentionsArea" class ='row'></div>
+                        <button id="btnMyMentions">Get my Mentions</button>
+			</div>
+			<div class="panel right" style="background-color:powderblue;">
+				<h3>Search by hashtag</h3>
+						<input id="hashtag" placeholder = "Hashtag" type="text">
+						<div id= "hashtagArea" class='row'></div><br>
+                        <button id="btnhashtag">Search!</button>
+			</div>
+			<div class="panel right" style="background-color:powderblue;">
+				<h3>Query User Tweets</h3>
+						<div id="userTweetsArea" class ='row'></div>
+                        <button id="btnUserTweets">Query User Tweets</button>
+			</div>
+			<div class="panel right" style="background-color:powderblue;">
+				<h3>Post a Tweet</h3>
+						<textarea id="tweetContent"></textarea>
+                        <button id="btnTweet">Tweet!</button>
+			</div>
+			<div id="tweets" style="background-color:powderblue;">
+				<h3>Your Live Feed</h3>
+					<div id='tweet-list' class='row'>
+					</div>
+					<button type="submit" id="btnRetweet" value="Retweet this!">Retweet This!</button>
+					
+			</div>
+		</div>
+	</div>

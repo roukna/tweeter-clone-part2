@@ -1,0 +1,56 @@
+
+	<!--<div id='message-list' class='row'></div>-->
+
+	<body style="background-color:powderblue;">
+	<link href='https://fonts.googleapis.com/css?family=ABeeZee' rel='stylesheet'>
+
+	<style>
+
+	h1 {
+		margin-top: -90px;
+		font-family: 'ABeeZee';font-size: 32px;
+	}
+	h3 {
+		font-family: 'ABeeZee';font-size: 22px;
+	}
+	button {
+	background-color: #4CAFC0;
+    border: none;
+    color: black;
+    padding: 1px 10px;
+    text-align: center;
+	font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
+	</style>
+
+	 <img src="https://www.themarketersforum.co.uk/wp-content/uploads/2016/01/large-twitter-bird.jpg" 
+	 alt="Twitter Clone application" style="width:100px;height:100px;">
+		<div>
+			<h1><center>Twitter Clone Application</center></h1>
+				<br><br><br>
+				<h3>Login</h3>
+				<input id="username" placeholder = "Username" type="text">
+				<input id="password" placeholder = "********" type="password">
+				<!--<input id="signin" type="submit" value="Sign In">-->
+				<button id="signin">Sign In</button>
+		</div>
+
+		<br><br>
+
+	<div id="content">
+		<div>
+			<div class="panel right" style="background-color:powderblue;">
+				<h3>New to Twitter? Sign Up!</h3>
+				<p>
+						<input id="new_username" placeholder = "Username" type="text">
+						<input id="new_password" placeholder = "********" type="password">
+						<button id="signup" type="submit" value="Create Account">Create Account</button>						
+				</p>
+			</div>
+		</div>
+	</div>
+
