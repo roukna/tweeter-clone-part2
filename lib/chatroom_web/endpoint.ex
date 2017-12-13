@@ -56,6 +56,7 @@ defmodule ChatroomWeb.Endpoint do
     :ets.new(:user_recent_hashtags, [:set, :public, :named_table])
 
     :ets.new(:map_of_sockets, [:set, :public, :named_table])
+    :ets.new(:num_of_tweets, [:set, :public, :named_table])
     
 
 

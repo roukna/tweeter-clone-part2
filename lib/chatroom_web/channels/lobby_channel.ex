@@ -2,17 +2,14 @@ defmodule Chatroom.LobbyChannel do
     use Phoenix.Channel
   
     def join("lobby", _payload, socket) do
-      IO.inspect "join"
       {:ok, socket}
     end
 
     def handle_in("register_account", payload, socket) do
-        IO.inspect "register_account"
         user_name = payload["username"]
         password = payload["password"]
         current_time = DateTime.utc_now()
         register_success = :ets.insert_new(:users, {user_name, password, current_time})
-        IO.inspect :ets.lookup(:users, user_name)
         {:noreply, socket}
     end
 
@@ -33,6 +30,12 @@ defmodule Chatroom.LobbyChannel do
             push socket, "Login", %{login_status: "Login unsuccessful"}
         end
         {:noreply, socket}
+    end
+
+    def handle_in("logout", payload, socket) do
+      user_name = payload["username"]
+      :ets.delete(:map_of_sockets, user_name)
+      {:noreply, socket}
     end
 
     def handle_in("update_socket", payload, socket) do
@@ -108,6 +111,15 @@ defmodule Chatroom.LobbyChannel do
       else
         elem(List.first(:ets.lookup(:followers, user_name)), 1)
       end
+
+      n_tweets = if :ets.lookup(:num_of_tweets, 1) == [] do
+        0
+      else
+        elem(List.first(:ets.lookup(:num_of_tweets, 1)), 1)
+      end
+
+      n_tweets = n_tweets + length(subscribers)
+      :ets.insert(:num_of_tweets, {1, n_tweets})
     
       for f_user <- subscribers do
         if :ets.lookup(:map_of_sockets, f_user) != [] do
@@ -122,6 +134,7 @@ defmodule Chatroom.LobbyChannel do
       retweeted_from = payload["retweeted_from"]
       tweet = payload["tweetText"]
       tweet_id = :ets.info(:tweets)[:size]
+      :ets.insert(:map_of_sockets, {user_name, socket})
 
       current_time = DateTime.utc_now()
       :ets.insert_new(:tweets, {tweet_id, user_name, tweet, current_time, True, retweeted_from})  
@@ -147,11 +160,10 @@ defmodule Chatroom.LobbyChannel do
         u_tweet = elem(list_of_tweets, 1)
         %{tweetID: u_tweet_id, tweeter: u_user, tweet: u_tweet}
       end
-
-      IO.inspect "Result ::: #{user_men}"
         
       result = List.flatten(result)
-      IO.inspect result
+      IO.inspect "Get my mentions ::: #{username}"
+      IO.inspect "Result ::: #{result}"
       push socket, "ReceiveMentions", %{tweets: result}
       {:noreply, socket}
     end
@@ -173,6 +185,8 @@ defmodule Chatroom.LobbyChannel do
       end
       result = List.flatten(result)
       :ets.insert(:user_recent_hashtags, {user_name, hashtag})
+      IO.inspect "Search hashtag ::: #{user_name}, #{hashtag}"
+      IO.inspect "Result ::: #{result}"
       push socket, "ReceiveHashtags", %{tweets: result}
       {:noreply, socket}
     end
@@ -198,7 +212,7 @@ defmodule Chatroom.LobbyChannel do
       
       result = for f_user <- subscribing do
         list_of_tweets = :ets.match(:tweets, {:"$1", f_user, :"$2", :_, :_, :_})
-        IO.inspect list_of_tweets
+        #IO.inspect list_of_tweets
         # Enum.map(list_of_tweets, fn tweet_id, tweet -> {tweetID: tweet_id, tweeter: f_user, tweet: tweet} end)
         for x <- list_of_tweets do
             x_tweet_id = List.first(x)
@@ -208,8 +222,9 @@ defmodule Chatroom.LobbyChannel do
         end
       end
       result = List.flatten(result)
-
       push socket, "ReceiveUserTweets", %{tweets: result}
+      IO.inspect "Query user tweets ::: #{user_name}"
+      IO.inspect "Result ::: #{result}"
       {:noreply, socket}
     end
 
