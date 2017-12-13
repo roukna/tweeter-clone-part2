@@ -24,7 +24,6 @@ defmodule Chatroom do
     non_active_users = users -- active_users
     no_of_active_users = length(active_users)
 
-    IO.inspect active_users
     Process.sleep(500)
 
     diff_users = if rand_active > no_of_active_users do
@@ -109,18 +108,15 @@ defmodule Chatroom do
       delay = @delay * user_id
       IO.inspect "#{user_name} starts tweeting at delay of #{delay}"
       spawn(fn -> send_tweets(user_id, active_users, list_of_static_hashtags, delay, list_of_socket_ids) end)
-
-      num_of_retweet_users = (25 * no_of_clients)/100
-      if user_id < num_of_retweet_users do
-        for _ <- 1..5 do
-          retweet_id = Enum.random(active_users)
-          retweet_user = "user" <> to_string(retweet_id)
-          spawn(fn -> retweet(retweet_id, list_of_socket_ids) end)
-        end
-      end
     end
 
     Process.sleep(5000)
+
+    for _ <- 1..5 do
+      retweet_id = Enum.random(active_users)
+      retweet_user = "user" <> to_string(retweet_id)
+      spawn(fn -> retweet(retweet_id, list_of_socket_ids) end)
+    end
 
     if active_users != [] do
       for _ <- 1..5 do
@@ -146,19 +142,19 @@ defmodule Chatroom do
   end
 
   def retweet(user_id, list_of_socket_ids) do
-    user_name = "@user" <> to_string(user_id)
+    user_name = "user" <> to_string(user_id)
     socket = elem(list_of_socket_ids, (user_id- 1))
     push socket, "retweetRandom", %{"username" => user_name}
   end
 
   def query_for_usermentions(user_id, list_of_socket_ids) do
-    user_name = "@user" <> to_string(user_id)
+    user_name = "user" <> to_string(user_id)
     socket = elem(list_of_socket_ids, (user_id- 1))
     push socket, "getMyMentions", %{"username" => user_name}
   end
 
   def query_for_hashtags(user_id, hashtag, list_of_socket_ids) do
-    user_name = "@user" <> to_string(user_id)
+    user_name = "user" <> to_string(user_id)
     socket = elem(list_of_socket_ids, (user_id- 1))
     push socket, "tweetsWithHashtag", %{"username" => user_name, "hashtag" => hashtag}
   end
