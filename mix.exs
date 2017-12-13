@@ -1,9 +1,9 @@
-defmodule Chatroom.Mixfile do
+defmodule Tweeter.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :chatroom,
+      app: :Tweeter,
       version: "0.0.1",
       elixir: "~> 1.4",
       elixirc_paths: elixirc_paths(Mix.env),
@@ -16,7 +16,7 @@ defmodule Chatroom.Mixfile do
   end
 
   def escript do
-    [main_module: Chatroom]
+    [main_module: Tweeter]
   end
 
   # Configuration for the OTP application.
@@ -24,7 +24,7 @@ defmodule Chatroom.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Chatroom.Application, []},
+      mod: {Tweeter.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

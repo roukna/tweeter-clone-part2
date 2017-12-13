@@ -54,34 +54,25 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 socket.connect()
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("lobby", {});
-
-/*message.on('keypress', event => {
-  if (event.keyCode == 13) {
-    channel.push('register_account', { name: name.val(), message: message.val() });
-    message.val('');
-  }
-});*/
+let channel = socket.channel("tweeter", {});
 
 $(document).ready(function() { channel.push('update_socket', { username: userID });
 });
 
-if(document.getElementById("signup"))         // use this if you are using id to check
+if(document.getElementById("signup"))
 {
   let new_username = $('#new_username');
   let new_password    = $('#new_password');
-  //window.location = "http://localhost:4000/dashboard.html?temp=" + new_username;
  
   document.getElementById("signup").onclick = function() {
- 
-    //console.log(window.location.href);
   channel.push('register_account', { username: new_username.val(), password: new_password.val() });
-  
-  
-  //location.href="home.html"
+  alert("Registered user: "+ new_username.val());
+  new_username.val('');
+  new_password.val('');
 };
+
 }
-if(document.getElementById("btnTweet"))         // use this if you are using id to check
+if(document.getElementById("btnTweet"))
 {
   $(document).ready(function() { channel.push('update_socket', { username: userID });
 });
@@ -90,46 +81,44 @@ if(document.getElementById("btnTweet"))         // use this if you are using id 
   var userID =  window.location.hash.substring(1)
   document.getElementById("btnTweet").onclick = function() {
   channel.push('tweet', { tweetText: tweetText.val() , username: userID });
+  tweetText.val('');
 };
 }
 
-if(document.getElementById("btnFollow"))         // use this if you are using id to check
+if(document.getElementById("btnFollow"))
 {
   let selfId = $('#selfId');
   let username2 = $('#username2');
   var userID =  window.location.hash.substring(1)
-  //let username_orig = Request.querystring["temp"];
-  //var text =
   
-  document.getElementById("btnFollow").onclick = function() {
-   console.log("user" + userID);
-   console.log("posting subscribe.");
-  
-  channel.push('subscribeTo', { username2: username2.val(), selfId: userID });
+  document.getElementById("btnFollow").onclick = function() {  
+  channel.push('subscribe', { username2: username2.val(), selfId: userID });
+  alert("Subscribed to: "+ username2.val());
+  username2.val('');
 };
 }
 
-if(document.getElementById("btnMyMentions"))         // use this if you are using id to check
+if(document.getElementById("btnMyMentions"))
 {
   var userID =  window.location.hash.substring(1)
   
   document.getElementById("btnMyMentions").onclick = function() {
-  channel.push('getMyMentions', { username: userID });
+  channel.push('query_user_mentions', { username: userID });
 };
 }
 
-if(document.getElementById("btnRetweet"))         // use this if you are using id to check
+if(document.getElementById("btnRetweet"))
 {
   document.getElementById("btnRetweet").onclick = function() {
     var userID =  window.location.hash.substring(1)
     var user = $('input[name=radioTweet]:checked').attr("user");
     var tweet = $('input[name=radioTweet]:checked').attr("tweet");
-    //document.getElementById("btnMyMentions").onclick = function() {
     channel.push('retweet', { username: userID, retweeted_from: user, tweetText: tweet });
+    alert("Retweeted: "+ tweet);
 };
 }
 
-if(document.getElementById("btnUserTweets"))         // use this if you are using id to check
+if(document.getElementById("btnUserTweets"))
   {
     var userID =  window.location.hash.substring(1)
     
@@ -138,61 +127,41 @@ if(document.getElementById("btnUserTweets"))         // use this if you are usin
   };
   }
 
-if(document.getElementById("btnhashtag"))         // use this if you are using id to check
+if(document.getElementById("btnhashtag"))
 {
   let hash = $('#hashtag');
   var userID =  window.location.hash.substring(1)
   document.getElementById("btnhashtag").onclick = function() {
-  channel.push('tweetsWithHashtag', { username: userID, hashtag: hash.val() });
+  channel.push('query_hashtag', { username: userID, hashtag: hash.val() });
+  hash.val('');
 };
 }
 
-if(document.getElementById("signin"))         // use this if you are using id to check
+if(document.getElementById("signin"))
 {
   let username = $('#username');
   let password    = $('#password');
-document.getElementById("signin").onclick = function() {
+  document.getElementById("signin").onclick = function() {
   window.location.href = 'http://localhost:4000/dashboard' + '#' + username.val();
   channel.push('login', { username: username.val(), password: password.val() });
-  //  location.href = "http://localhost:4000/dashboard";
 };
 }
 
-/*if(document.getElementByTagName("button-retweet"))        // use this if you are using id to check
-{
-  document.getElementByTagName("button-retweet").onclick = function() {
-  console.log("tweet" + self.g);
-  console.log("user" + user.val());
- 
- //channel.push('subscribeTo', { username2: username2.val(), selfId: userID });
-};
-}*/
-
-
-/*channel.on('Registered', payload => {
-  list.append(`<b>${"Registered:" || 'Anonymous'}:</b> ${payload.name}<br>`);
-  list.prop({scrollTop: list.prop("scrollHeight")});
-});*/
-
 channel.on('Login', payload => {
-  //alert(`${payload.login_status}`)
   let list    = $('#message-list');
   list.append(`<b>${"Registered:" || 'Anonymous'}:</b> ${payload.login_status}<br>`);
   list.prop({scrollTop: list.prop("scrollHeight")});
 });
 
 channel.on ('ReceiveTweet', payload => {
-  //alert(`${payload.login_status}`)
-  let tweet_list    = $('#tweet-list');
+  let tweet_list = $('#tweet-list');
   var btn = document.createElement("INPUT");
   btn.setAttribute('type', 'radio');
   btn.setAttribute('name', 'radioTweet');
   btn.setAttribute('user', `${payload.username}`);
   btn.setAttribute('tweet', `${payload.tweetText}`);
-  //btn.innerHTML = 'RETWEET';
+
   tweet_list.append(btn);
-  console.log(`${payload.tweetText}`)
-  console.log(`${payload.reTweet}`)
   if(`${payload.reTweet}` == "Y") {
     tweet_list.append(`<b>${payload.username}</b> re-tweeted <b>${payload.tweetText}</b> from ${payload.reTweetedFrom}<br>`);
   }
@@ -202,7 +171,7 @@ channel.on ('ReceiveTweet', payload => {
   tweet_list.prop({scrollTop: tweet_list.prop("scrollHeight")});
 });
 
-channel.on('ReceiveMentions', payload => {
+channel.on('GetMentions', payload => {
   var area   = document.getElementById("mentionsArea");
   var myTweets = payload.tweets;
   var arrayLength = myTweets.length;
@@ -214,7 +183,7 @@ channel.on('ReceiveMentions', payload => {
   area.prop({scrollTop: area.prop("scrollHeight")});
 });
 
-channel.on('ReceiveUserTweets', payload => {
+channel.on('GetUserTweets', payload => {
   var area   = document.getElementById("userTweetsArea");
   var myTweets = payload.tweets;
   var arrayLength = myTweets.length;
@@ -226,7 +195,7 @@ channel.on('ReceiveUserTweets', payload => {
   area.prop({scrollTop: area.prop("scrollHeight")});
 });
 
-channel.on('ReceiveHashtags', payload => {
+channel.on('GetHashtags', payload => {
   var hasharea   = document.getElementById("hashtagArea");
   var myTweets2 = payload.tweets;
   var arrayLength2 = myTweets2.length;

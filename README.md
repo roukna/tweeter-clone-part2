@@ -1,4 +1,4 @@
-# Chatroom
+# Tweeter
 
 To start your Phoenix server:
 

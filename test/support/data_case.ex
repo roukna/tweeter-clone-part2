@@ -1,4 +1,4 @@
-defmodule Chatroom.DataCase do
+defmodule Tweeter.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -16,20 +16,20 @@ defmodule Chatroom.DataCase do
 
   using do
     quote do
-      alias Chatroom.Repo
+      alias Tweeter.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Chatroom.DataCase
+      import Tweeter.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Chatroom.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Tweeter.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Chatroom.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Tweeter.Repo, {:shared, self()})
     end
 
     :ok

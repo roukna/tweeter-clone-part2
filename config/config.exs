@@ -6,15 +6,15 @@
 use Mix.Config
 
 # General application configuration
-config :chatroom,
-  ecto_repos: [Chatroom.Repo]
+config :Tweeter,
+  ecto_repos: [Tweeter.Repo]
 
 # Configures the endpoint
-config :chatroom, ChatroomWeb.Endpoint,
+config :Tweeter, TweeterWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "x0O86qGUGB7d16uDaSb/OmTndjMIUwdSCofih2L3aWuEkegB1ldDsPqSFHV6yplt",
-  render_errors: [view: ChatroomWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Chatroom.PubSub,
+  render_errors: [view: TweeterWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: Tweeter.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger

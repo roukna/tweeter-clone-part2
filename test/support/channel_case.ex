@@ -1,4 +1,4 @@
-defmodule ChatroomWeb.ChannelCase do
+defmodule TweeterWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -21,15 +21,15 @@ defmodule ChatroomWeb.ChannelCase do
       use Phoenix.ChannelTest
 
       # The default endpoint for testing
-      @endpoint ChatroomWeb.Endpoint
+      @endpoint TweeterWeb.Endpoint
     end
   end
 
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Chatroom.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Tweeter.Repo)
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Chatroom.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Tweeter.Repo, {:shared, self()})
     end
     :ok
   end

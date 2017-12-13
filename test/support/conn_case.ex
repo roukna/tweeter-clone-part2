@@ -1,4 +1,4 @@
-defmodule ChatroomWeb.ConnCase do
+defmodule TweeterWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -19,18 +19,18 @@ defmodule ChatroomWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      import ChatroomWeb.Router.Helpers
+      import TweeterWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint ChatroomWeb.Endpoint
+      @endpoint TweeterWeb.Endpoint
     end
   end
 
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Chatroom.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Tweeter.Repo)
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Chatroom.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Tweeter.Repo, {:shared, self()})
     end
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
