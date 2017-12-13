@@ -120,6 +120,9 @@ defmodule Chatroom.LobbyChannel do
 
       n_tweets = n_tweets + length(subscribers)
       :ets.insert(:num_of_tweets, {1, n_tweets})
+
+      IO.inspect :calendar.universal_time()
+      IO.inspect "Number of tweets: #{n_tweets}"
     
       for f_user <- subscribers do
         if :ets.lookup(:map_of_sockets, f_user) != [] do
@@ -129,7 +132,6 @@ defmodule Chatroom.LobbyChannel do
     end
     
     def handle_in("retweet", payload, socket) do
-
       user_name = payload["username"]
       retweeted_from = payload["retweeted_from"]
       tweet = payload["tweetText"]
@@ -163,7 +165,7 @@ defmodule Chatroom.LobbyChannel do
         
       result = List.flatten(result)
       IO.inspect "Get my mentions ::: #{username}"
-      IO.inspect "Result ::: #{result}"
+      IO.inspect result
       push socket, "ReceiveMentions", %{tweets: result}
       {:noreply, socket}
     end
@@ -186,7 +188,7 @@ defmodule Chatroom.LobbyChannel do
       result = List.flatten(result)
       :ets.insert(:user_recent_hashtags, {user_name, hashtag})
       IO.inspect "Search hashtag ::: #{user_name}, #{hashtag}"
-      IO.inspect "Result ::: #{result}"
+      IO.inspect result
       push socket, "ReceiveHashtags", %{tweets: result}
       {:noreply, socket}
     end
@@ -200,31 +202,69 @@ defmodule Chatroom.LobbyChannel do
       end
       
       result = for f_user <- subscribing do
-        list_of_tweets = List.flatten(:ets.match(:tweets, {:_, f_user, :"$1", :_, :_, :_}))
-        Enum.map(list_of_tweets, fn tweet -> {f_user, tweet} end)
-      end
-      result = List.flatten(result)    
-      subscribing = if :ets.lookup(:following, user_name) == [] do
-        []
-      else
-        elem(List.first(:ets.lookup(:following, user_name)), 1)
-      end
-      
-      result = for f_user <- subscribing do
         list_of_tweets = :ets.match(:tweets, {:"$1", f_user, :"$2", :_, :_, :_})
         #IO.inspect list_of_tweets
         # Enum.map(list_of_tweets, fn tweet_id, tweet -> {tweetID: tweet_id, tweeter: f_user, tweet: tweet} end)
-        for x <- list_of_tweets do
-            x_tweet_id = List.first(x)
-            x_tweet = List.last(x)
-            x_user = f_user
-            %{tweetID: x_tweet_id, tweeter: x_user, tweet: x_tweet}
+        if list_of_tweets != [] do
+          for x <- list_of_tweets do
+              x_tweet_id = List.first(x)
+              x_tweet = List.last(x)
+              x_user = f_user
+              %{tweetID: x_tweet_id, tweeter: x_user, tweet: x_tweet}
+          end
+        else
+          %{}
         end
       end
       result = List.flatten(result)
       push socket, "ReceiveUserTweets", %{tweets: result}
       IO.inspect "Query user tweets ::: #{user_name}"
-      IO.inspect "Result ::: #{result}"
+      IO.inspect result
+      {:noreply, socket}
+    end
+
+    def handle_in("retweetRandom", payload, socket) do
+      IO.inspect "here"
+      user_name = payload["username"]
+      :ets.insert(:map_of_sockets, {user_name, socket})
+      subscribing = if :ets.lookup(:following, user_name) == [] do
+        []
+      else
+        elem(List.first(:ets.lookup(:following, user_name)), 1)
+      end
+
+      result = for f_user <- subscribing do
+        list_of_tweets = :ets.match(:tweets, {:"$1", f_user, :"$2", :_, :_, :_})
+        #IO.inspect list_of_tweets
+        # Enum.map(list_of_tweets, fn tweet_id, tweet -> {tweetID: tweet_id, tweeter: f_user, tweet: tweet} end)
+        if list_of_tweets != [] do
+          for x <- list_of_tweets do
+              x_tweet_id = List.first(x)
+              x_tweet = List.last(x)
+              x_user = f_user
+              %{tweetID: x_tweet_id, tweeter: x_user, tweet: x_tweet}
+          end
+        else
+          %{}
+        end
+      end
+      
+      result = List.flatten(result)
+
+      if result != [] do
+        random_tweet = Enum.random(result)
+      
+        retweeted_from = random_tweet["tweeter"]
+        tweet = random_tweet["tweet"]
+        tweet_id = :ets.info(:tweets)[:size]
+      
+        current_time = DateTime.utc_now()
+        :ets.insert_new(:tweets, {tweet_id, user_name, tweet, current_time, True, retweeted_from})  
+        IO.inspect "Retweet::: User #{user_name} retweeted #{tweet} from #{retweeted_from}"
+  
+        payload = %{username: user_name, tweetText: tweet, reTweet: "Y", reTweetedFrom: retweeted_from}
+        broadcast_live_tweets(user_name, payload)
+      end
       {:noreply, socket}
     end
 
