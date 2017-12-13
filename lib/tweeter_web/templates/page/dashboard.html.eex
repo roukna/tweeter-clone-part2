@@ -1,0 +1,122 @@
+
+<head>
+<script src="/js/app.js"></script>
+
+<body style="background-color:powderblue;">
+	<link href='https://fonts.googleapis.com/css?family=ABeeZee' rel='stylesheet'>
+
+	<style>
+
+	h1 {
+		margin-top: -75px;
+		margin-left: -70px;
+		font-family: 'ABeeZee';font-size: 32px;
+	}
+
+	h3 {
+		
+		font-family: 'ABeeZee';font-size: 20px;
+		margin-left: -180px;
+	}
+
+	button {
+	background-color: #4CAFC0;
+    	border: none;
+    	color: black;
+    	padding: 1px 10px;
+		font-weight: bold;
+    	text-decoration: none;
+    	display: inline-block;
+		margin-left: -180px;
+		border-radius: 8px;
+    	font-size: 14px;
+	}
+	p {
+		margin-top: -120px;
+	}
+
+	img {
+		margin-left: -180px;
+		border-radius: 10px;
+	}
+
+	textarea {
+		margin-left: -180px;
+		border-radius: 8px;
+	}
+
+	input {
+		margin-left: -180px;
+		border-radius: 8px;
+	}
+
+	#RightPanel {
+		margin-top: -230px;
+	}
+
+	
+	</style>
+</head>
+<body>
+
+	<img src="https://successentrepreneur.org/wp-content/uploads/2016/01/twitter-logo-png-transparent-background-310.png" 
+	 alt="Tweeter Clone application" style="width:100px;height:100px;">
+	<header>
+		<div class="wrapper" style="background-color:powderblue;">
+			<h1>Tweeter</h1><br><br><br>                
+		</div>
+		<p align="right">
+		<button id="btnLogOut" onclick="location.href = 'http://localhost:4000';">Log Out</button>
+		</p>	
+	</header>
+	
+	<div id="content">
+		<div class="wrapper">
+			<div class="panel right" style="background-color:powderblue;">
+				<br><br><br><br><h3>Post a Tweet</h3>
+						<textarea id="tweetContent"></textarea><br><br>
+                        <button id="btnTweet">Tweet!</button>
+			</div>
+
+			<div id="tweets" style="background-color:powderblue;">
+				<h3>Live Feed</h3>
+					<div id='tweet-list' class='row'>
+					</div>
+					<br><br>
+					<button type="submit" id="btnRetweet" value="Retweet this!">Retweet</button>
+					
+			</div>
+
+	
+
+	<div id="RightPanel" style="width: 800; height: 100%; float: right;">
+
+			<div class="panel right" style="background-color:powderblue;">
+				<h3>Search by hashtag</h3>
+						<input id="hashtag" placeholder = "Hashtag" type="text">
+						<div id= "hashtagArea" class='row'></div><br>
+                        <button id="btnhashtag">Search!</button>
+			</div>
+
+			<div class="panel right" style="background-color:powderblue;">
+				<h3>Query User Tweets</h3>
+						<div id="userTweetsArea" class ='row'></div>
+                        <button id="btnUserTweets">Query User Tweets</button>
+			</div>
+
+			<div class="panel right" style="background-color:powderblue;">
+				<h3>Get my mentions</h3>
+						<div id="mentionsArea" class ='row'></div>
+                        <button id="btnMyMentions">Get my Mentions</button>
+			</div>
+
+            <div class="panel right" style="background-color:powderblue;">
+				<h3>Subscribe</h3>
+						<input id="username2" placeholder = "Username" type="text"><br><br>
+                        <button id="btnFollow" >Follow</button>
+			</div>
+
+		</div>
+			
+		</div>
+	</div>

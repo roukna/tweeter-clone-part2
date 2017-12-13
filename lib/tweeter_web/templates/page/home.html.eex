@@ -1,0 +1,81 @@
+
+	<!--<div id='message-list' class='row'></div>-->
+	<link href='https://fonts.googleapis.com/css?family=ABeeZee' rel='stylesheet'>
+
+	<style>
+	
+
+	body { 
+    background-image: url("https://www.newslaundry.com/uploads/2017/09/Twitter-Banning-Accounts-article-V2.jpg");
+    background-repeat: no-repeat;	
+    background-attachment: fixed;
+    background-size:cover;
+	}
+
+	h1 {
+		margin-top: -75px;
+		font-family: 'ABeeZee';font-size: 32px;
+		margin-left: -70px;
+		color: white;
+	}
+	h3 {
+		font-family: 'ABeeZee';font-size: 22px;
+		margin-left: -180px;
+		color: white;
+	}
+	p {
+		font-family: 'ABeeZee';font-size: 15px;
+		margin-left: -180px;
+		color: white;
+	}
+	button {
+	background-color: #4CAFC0;
+    border: none;
+    color: black;
+    padding: 1px 10px;
+    text-align: center;
+	font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+	margin-left: -180px;
+	border-radius: 8px;
+	}
+
+	img {
+		margin-left: -180px;
+		border-radius: 10px;
+	}
+
+	input {
+		margin-left: -180px;
+		border-radius: 8px;
+	}
+
+	</style>
+
+	 <img src="https://successentrepreneur.org/wp-content/uploads/2016/01/twitter-logo-png-transparent-background-310.png" 
+	 alt="Tweeter Clone application" style="width:100px;height:100px;">
+		<div>
+			<h1>Tweeter</h1>
+				<br><br><br>
+				<h3>Username</h3>
+				<input id="username" placeholder = "Username" type="text"><br>
+				<h3>Password</h3>
+				<input id="password" placeholder = "********" type="password"><br><br>
+				<!--<input id="signin" type="submit" value="Sign In">-->
+				<button id="signin">Sign In</button>
+		</div>
+
+		<br><br>
+
+		<div>
+			<p>Don't have an Account? Create one below.</p>
+			<!--<button id="signup">Sign Up!</button>-->
+				<h3>Username</h3>
+				<input id="new_username" placeholder = "Username" type="text"><br>
+				<h3>Password</h3>
+				<input id="new_password" placeholder = "********" type="password"><br><br>
+				<button id="signup" type="submit" value="Create Account">Create Account</button>						
+			
+		</div>
