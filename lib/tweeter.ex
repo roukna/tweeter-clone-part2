@@ -89,7 +89,7 @@ defmodule Tweeter do
       follower = "user" <> to_string(follower_id)
       user = "user" <> to_string(elem(list_of_available_users, rand_id))
       follower_socket = elem(list_of_socket_ids, (follower_id- 1))
-      push follower_socket, "subscribe", %{"username2" => user, "selfId" => follower}
+      push follower_socket, "subscribe", %{"to_user" => user, "selfId" => follower}
 
       num_of_sub = num_of_sub - 1
       x = Tuple.delete_at(list_of_available_users, rand_id)
@@ -150,13 +150,13 @@ defmodule Tweeter do
   def query_for_usermentions(user_id, list_of_socket_ids) do
     user_name = "user" <> to_string(user_id)
     socket = elem(list_of_socket_ids, (user_id- 1))
-    push socket, "getMyMentions", %{"username" => user_name}
+    push socket, "query_user_mentions", %{"username" => user_name}
   end
 
   def query_for_hashtags(user_id, hashtag, list_of_socket_ids) do
     user_name = "user" <> to_string(user_id)
     socket = elem(list_of_socket_ids, (user_id- 1))
-    push socket, "tweetsWithHashtag", %{"username" => user_name, "hashtag" => hashtag}
+    push socket, "query_hashtag", %{"username" => user_name, "hashtag" => hashtag}
   end
 
   def send_tweets(user_id, active_users, list_of_static_hashtags, delay, list_of_socket_ids) do
@@ -181,7 +181,7 @@ defmodule Tweeter do
     tweet = ((:crypto.strong_rand_bytes(5)|> Base.encode16) |> (binary_part(0, 5))) <> " " <> ((:crypto.strong_rand_bytes(6)|> Base.encode16 |> binary_part(0, 6))) <> " " <> ((:crypto.strong_rand_bytes(7)|> Base.encode16 |> binary_part(0, 7)))
     tweet = tweet <> user_mention <> hashtag
     socket = elem(list_of_socket_ids, (user_id- 1))
-    push socket, "tweet", %{"username" => user_name, "tweetText" => tweet}
+    push socket, "tweet", %{"username" => user_name, "tweet" => tweet}
     Process.sleep(delay)
     send_tweets(user_id, active_users, list_of_static_hashtags, delay, list_of_socket_ids)
   end

@@ -74,8 +74,8 @@
 		<div class="wrapper">
 			<div class="panel right" style="background-color:powderblue;">
 				<br><br><br><br><h3>Post a Tweet</h3>
-						<textarea id="tweetContent"></textarea><br><br>
-                        <button id="btnTweet">Tweet!</button>
+						<textarea id="tweetValue"></textarea><br><br>
+                        <button id="tweetButton">Tweet!</button>
 			</div>
 
 			<div id="tweets" style="background-color:powderblue;">
@@ -83,7 +83,7 @@
 					<div id='tweet-list' class='row'>
 					</div>
 					<br><br>
-					<button type="submit" id="btnRetweet" value="Retweet this!">Retweet</button>
+					<button type="submit" id="retweetButton" value="Retweet this!">Retweet</button>
 					
 			</div>
 
@@ -95,25 +95,25 @@
 				<h3>Search by hashtag</h3>
 						<input id="hashtag" placeholder = "Hashtag" type="text">
 						<div id= "hashtagArea" class='row'></div><br>
-                        <button id="btnhashtag">Search!</button>
+                        <button id="hashtagButton">Search!</button>
 			</div>
 
 			<div class="panel right" style="background-color:powderblue;">
 				<h3>Query User Tweets</h3>
 						<div id="userTweetsArea" class ='row'></div>
-                        <button id="btnUserTweets">Query User Tweets</button>
+                        <button id="userTweetsButton">Query User Tweets</button>
 			</div>
 
 			<div class="panel right" style="background-color:powderblue;">
 				<h3>Get my mentions</h3>
 						<div id="mentionsArea" class ='row'></div>
-                        <button id="btnMyMentions">Get my Mentions</button>
+                        <button id="myMentionsButton">Get my Mentions</button>
 			</div>
 
             <div class="panel right" style="background-color:powderblue;">
 				<h3>Subscribe</h3>
-						<input id="username2" placeholder = "Username" type="text"><br><br>
-                        <button id="btnFollow" >Follow</button>
+						<input id="to_user" placeholder = "Username" type="text"><br><br>
+                        <button id="followButton" >Follow</button>
 			</div>
 
 		</div>

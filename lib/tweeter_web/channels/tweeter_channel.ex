@@ -38,14 +38,14 @@ defmodule Tweeter.TweetChannel do
       {:noreply, socket}
     end
 
-    def handle_in("update_socket", payload, socket) do
+    def handle_in("refresh_socket", payload, socket) do
         username = payload["username"]
         :ets.insert(:map_of_sockets, {username, socket})
         {:noreply, socket}
     end
 
     def handle_in("subscribe", payload, socket) do
-        user = payload["username2"]
+        user = payload["to_user"]
         follower = payload["selfId"]
         :ets.insert(:map_of_sockets, {follower, socket})
 
@@ -69,7 +69,7 @@ defmodule Tweeter.TweetChannel do
 
     def handle_in("tweet", payload, socket) do
         user_name = payload["username"]
-        tweet = payload["tweetText"]
+        tweet = payload["tweet"]
         :ets.insert(:map_of_sockets, {user_name, socket})
         tweet_id = :ets.info(:tweets)[:size]
         current_time = DateTime.utc_now()
@@ -99,7 +99,7 @@ defmodule Tweeter.TweetChannel do
     
         # IO.inspect "Tweet::: User #{user_name} ::: #{tweet}"
 
-        payload = %{username: user_name, tweetText: tweet, reTweet: "N"}   
+        payload = %{username: user_name, tweet: tweet, reTweet: "N"}   
         broadcast_live_tweets(user_name, payload)
         {:noreply, socket}
     end
@@ -137,7 +137,7 @@ defmodule Tweeter.TweetChannel do
     def handle_in("retweet", payload, socket) do
       user_name = payload["username"]
       retweeted_from = payload["retweeted_from"]
-      tweet = payload["tweetText"]
+      tweet = payload["tweet"]
       tweet_id = :ets.info(:tweets)[:size]
       :ets.insert(:map_of_sockets, {user_name, socket})
 
@@ -145,7 +145,7 @@ defmodule Tweeter.TweetChannel do
       :ets.insert_new(:tweets, {tweet_id, user_name, tweet, current_time, True, retweeted_from})  
       # IO.inspect "Retweet::: User #{user_name} retweeted #{tweet} from #{retweeted_from}"
   
-      payload = %{username: user_name, tweetText: tweet, reTweet: "Y", reTweetedFrom: retweeted_from}
+      payload = %{username: user_name, tweet: tweet, reTweet: "Y", reTweetedFrom: retweeted_from}
       broadcast_live_tweets(user_name, payload)
       {:noreply, socket}
     end
@@ -257,7 +257,7 @@ defmodule Tweeter.TweetChannel do
         :ets.insert_new(:tweets, {tweet_id, user_name, tweet, current_time, True, retweeted_from})  
         # IO.inspect "Retweet::: User #{user_name} retweeted #{tweet} from #{retweeted_from}"
   
-        payload = %{username: user_name, tweetText: tweet, reTweet: "Y", reTweetedFrom: retweeted_from}
+        payload = %{username: user_name, tweet: tweet, reTweet: "Y", reTweetedFrom: retweeted_from}
         broadcast_live_tweets(user_name, payload)
       end
       {:noreply, socket}

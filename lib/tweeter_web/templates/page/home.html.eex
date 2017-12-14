@@ -73,9 +73,9 @@
 			<p>Don't have an Account? Create one below.</p>
 			<!--<button id="signup">Sign Up!</button>-->
 				<h3>Username</h3>
-				<input id="new_username" placeholder = "Username" type="text"><br>
+				<input id="signup_username" placeholder = "Username" type="text"><br>
 				<h3>Password</h3>
-				<input id="new_password" placeholder = "********" type="password"><br><br>
+				<input id="signup_password" placeholder = "********" type="password"><br><br>
 				<button id="signup" type="submit" value="Create Account">Create Account</button>						
 			
 		</div>
